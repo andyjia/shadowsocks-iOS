@@ -4,3 +4,7 @@ shadowsocks.xcodeproj/project.xcworkspace/
 shadowsocks.xcodeproj/xcuserdata/
 .DS_STORE
 *.dmg
+.DS_Store
+Pods/
+shadowsocks.xcworkspace/
+zxing-objc/ZXingObjC.xcodeproj/xcuserdata/lvht.xcuserdatad/
