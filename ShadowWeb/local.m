@@ -14,6 +14,8 @@ char _server[SAVED_STR_LEN];
 char _remote_port[SAVED_STR_LEN];
 char _method[SAVED_STR_LEN];
 char _password[SAVED_STR_LEN];
+char _bind_addr[SAVED_STR_LEN];
+char _bind_port[SAVED_STR_LEN];
 
 int setnonblocking(int fd) {
     int flags;
@@ -22,7 +24,7 @@ int setnonblocking(int fd) {
     return fcntl(fd, F_SETFL, flags | O_NONBLOCK);
 }
 
-int create_and_bind(const char *port) {
+int create_and_bind(const char* port, const char* addr) {
     struct addrinfo hints;
     struct addrinfo *result, *rp;
     int s, listen_sock = 0;
@@ -31,7 +33,7 @@ int create_and_bind(const char *port) {
     hints.ai_family = AF_UNSPEC; /* Return IPv4 and IPv6 choices */
     hints.ai_socktype = SOCK_STREAM; /* We want a TCP socket */
 
-    s = getaddrinfo("127.0.0.1", port, &hints, &result);
+    s = getaddrinfo(addr, port, &hints, &result);
     if (s != 0) {
         NSLog(@"getaddrinfo: %s", gai_strerror(s));
         return -1;
@@ -58,7 +60,7 @@ int create_and_bind(const char *port) {
     }
 
     if (rp == NULL) {
-        NSLog(@"Could not bind");
+        NSLog(@"Could not bind %s:%s", addr, port);
         return -1;
     }
 
@@ -545,15 +547,24 @@ static void accept_cb (EV_P_ ev_io *w, int revents)
 	}
 }
 
-void set_config(const char *server, const char *remote_port, const char* password, const char* method) {
+void set_config(const char* server,
+                const char* remote_port,
+                const char* password,
+                const char* method,
+                const char* bind_addr,
+                const char* bind_port) {
     assert(strlen(server) < SAVED_STR_LEN);
     assert(strlen(remote_port) < SAVED_STR_LEN);
     assert(strlen(password) < SAVED_STR_LEN);
     assert(strlen(method) < SAVED_STR_LEN);
+    assert(strlen(bind_addr) < SAVED_STR_LEN);
+    assert(strlen(bind_port) < SAVED_STR_LEN);
     strcpy(_server, server);
     strcpy(_remote_port, remote_port);
     strcpy(_password, password);
     strcpy(_method, method);
+    strcpy(_bind_addr, bind_addr);
+    strcpy(_bind_port, bind_port);
 #ifdef DEBUG
     NSLog(@"calculating ciphers");
 #endif
@@ -564,7 +575,7 @@ void set_config(const char *server, const char *remote_port, const char* passwor
 int local_main ()
 {
     int listenfd;
-    listenfd = create_and_bind("1080");
+    listenfd = create_and_bind(_bind_port, _bind_addr);
     if (listenfd < 0) {
 #ifdef DEBUG
         NSLog(@"bind() error..");
@@ -576,7 +587,7 @@ int local_main ()
         return 1;
     }
 #ifdef DEBUG
-    NSLog(@"server listening at port %s\n", "1080");
+    NSLog(@"server listening at %s:%s\n", _bind_addr, _bind_port);
 #endif
 
     setnonblocking(listenfd);

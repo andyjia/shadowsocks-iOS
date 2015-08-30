@@ -63,10 +63,13 @@
     } else {
         Profile *profile = configuration.profiles[configuration.current];
         [ShadowsocksRunner setUsingPublicServer:NO];
+
         [ShadowsocksRunner saveConfigForKey:kShadowsocksIPKey value:profile.server];
         [ShadowsocksRunner saveConfigForKey:kShadowsocksPortKey value:[NSString stringWithFormat:@"%ld", (long)profile.serverPort]];
         [ShadowsocksRunner saveConfigForKey:kShadowsocksPasswordKey value:profile.password];
         [ShadowsocksRunner saveConfigForKey:kShadowsocksEncryptionKey value:profile.method];
+        [ShadowsocksRunner saveConfigForKey:kShadowsocksBindIpKey value:profile.bindAddr];
+        [ShadowsocksRunner saveConfigForKey:kShadowsocksBindPortKey value:[NSString stringWithFormat:@"%ld", (long)profile.bindPort]];
         [ShadowsocksRunner reloadConfig];
     }
 }

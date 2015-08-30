@@ -12,9 +12,15 @@
 }
 
 + (BOOL)settingsAreNotComplete {
-    if ((![ShadowsocksRunner isUsingPublicServer]) && ([[NSUserDefaults standardUserDefaults] stringForKey:kShadowsocksIPKey] == nil ||
-            [[NSUserDefaults standardUserDefaults] stringForKey:kShadowsocksPortKey] == nil ||
-            [[NSUserDefaults standardUserDefaults] stringForKey:kShadowsocksPasswordKey] == nil)) {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+
+    if ((![ShadowsocksRunner isUsingPublicServer])
+        && ([defaults stringForKey:kShadowsocksIPKey] == nil ||
+            [defaults stringForKey:kShadowsocksPortKey] == nil ||
+            [defaults stringForKey:kShadowsocksPasswordKey] == nil ||
+            [defaults stringForKey:kShadowsocksBindIpKey] == nil ||
+            [defaults stringForKey:kShadowsocksBindPortKey] == nil))
+    {
         return YES;
     } else {
         return NO;
@@ -36,14 +42,27 @@
 + (void)reloadConfig {
     if (![ShadowsocksRunner settingsAreNotComplete]) {
         if ([ShadowsocksRunner isUsingPublicServer]) {
-            set_config("106.186.124.182", "8911", "Shadowsocks", "aes-128-cfb");
+            set_config("106.186.124.182",
+                       "8911",
+                       "Shadowsocks",
+                       "aes-128-cfb",
+                       "127.0.0.1",
+                       "1080");
             memcpy(shadowsocks_key, "\x45\xd1\xd9\x9e\xbd\xf5\x8c\x85\x34\x55\xdd\x65\x46\xcd\x06\xd3", 16);
         } else {
+
             NSString *v = [[NSUserDefaults standardUserDefaults] objectForKey:kShadowsocksEncryptionKey];
             if (!v) {
                 v = @"aes-256-cfb";
             }
-            set_config([[[NSUserDefaults standardUserDefaults] stringForKey:kShadowsocksIPKey] cStringUsingEncoding:NSUTF8StringEncoding], [[[NSUserDefaults standardUserDefaults] stringForKey:kShadowsocksPortKey] cStringUsingEncoding:NSUTF8StringEncoding], [[[NSUserDefaults standardUserDefaults] stringForKey:kShadowsocksPasswordKey] cStringUsingEncoding:NSUTF8StringEncoding], [v cStringUsingEncoding:NSUTF8StringEncoding]);
+
+            // TODO 重构此处代码，太长了。
+            set_config([[[NSUserDefaults standardUserDefaults] stringForKey:kShadowsocksIPKey] cStringUsingEncoding:NSUTF8StringEncoding],
+                       [[[NSUserDefaults standardUserDefaults] stringForKey:kShadowsocksPortKey] cStringUsingEncoding:NSUTF8StringEncoding],
+                       [[[NSUserDefaults standardUserDefaults] stringForKey:kShadowsocksPasswordKey] cStringUsingEncoding:NSUTF8StringEncoding],
+                       [v cStringUsingEncoding:NSUTF8StringEncoding],
+                       [[[NSUserDefaults standardUserDefaults] stringForKey:kShadowsocksBindIpKey] cStringUsingEncoding:NSUTF8StringEncoding],
+                       [[[NSUserDefaults standardUserDefaults] stringForKey:kShadowsocksBindPortKey] cStringUsingEncoding:NSUTF8StringEncoding]);
         }
     }
 }

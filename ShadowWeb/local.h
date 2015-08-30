@@ -54,6 +54,11 @@ void close_and_free_remote(EV_P_ struct remote *remote);
 struct server* new_server(int fd);
 void free_server(struct server *server);
 void close_and_free_server(EV_P_ struct server *server);
-void set_config(const char *server, const char *remote_port, const char* password, const char* method);
+void set_config(const char* server,
+                const char* remote_port,
+                const char* password,
+                const char* method,
+                const char* bind_addr,
+                const char* bind_port);
 int local_main();
 

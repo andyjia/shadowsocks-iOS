@@ -14,6 +14,7 @@
 #import "GCDWebServer.h"
 #import "SWBViewController.h"
 #import "ShadowsocksRunner.h"
+#import "ProfileManager.h"
 
 #define kProxyModeKey @"proxy mode"
 
@@ -140,6 +141,7 @@ void polipo_exit();
 #pragma mark - Run proxy
 
 - (void)runProxy {
+    [ProfileManager reloadShadowsocksRunner];
     [ShadowsocksRunner reloadConfig];
     for (; ;) {
         if ([ShadowsocksRunner runProxy]) {

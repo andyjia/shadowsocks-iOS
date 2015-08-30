@@ -21,6 +21,9 @@
 
 @property (nonatomic, copy) NSString * method;
 
+@property (nonatomic, copy) NSString * bindAddr;
+@property (nonatomic, assign) NSInteger bindPort;
+
 
 @end
 

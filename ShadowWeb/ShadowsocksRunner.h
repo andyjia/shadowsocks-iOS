@@ -8,6 +8,8 @@
 
 #define kShadowsocksIPKey @"proxy ip"
 #define kShadowsocksPortKey @"proxy port"
+#define kShadowsocksBindIpKey @"proxy bind ip"
+#define kShadowsocksBindPortKey @"proxy bind port"
 #define kShadowsocksPasswordKey @"proxy password"
 #define kShadowsocksEncryptionKey @"proxy encryption"
 #define kShadowsocksProxyModeKey @"proxy mode"

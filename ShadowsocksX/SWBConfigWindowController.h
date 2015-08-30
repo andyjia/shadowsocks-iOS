@@ -17,6 +17,8 @@
 @property (nonatomic, strong) IBOutlet NSTableView *tableView;
 @property (nonatomic, strong) IBOutlet NSTextField *serverField;
 @property (nonatomic, strong) IBOutlet NSTextField *portField;
+@property (nonatomic, strong) IBOutlet NSTextField *bindAddrField;
+@property (nonatomic, strong) IBOutlet NSTextField *bindPortField;
 @property (nonatomic, strong) IBOutlet NSComboBox *methodBox;
 @property (nonatomic, strong) IBOutlet NSSecureTextField *passwordField;
 @property (nonatomic, strong) IBOutlet NSTextField *remarksField;

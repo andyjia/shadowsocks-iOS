@@ -23,6 +23,9 @@
         self.password = (dictionary[@"password"] != [NSNull null]) ? dictionary[@"password"] : nil;
   
         self.method = (dictionary[@"method"] != [NSNull null]) ? dictionary[@"method"] : nil;
+
+        self.bindAddr = (dictionary[@"bind_addr"] != [NSNull null]) ? dictionary[@"bind_addr"] : @"127.0.0.1";
+        self.bindPort = (dictionary[@"bind_port"] != [NSNull null]) ? [dictionary[@"bind_port"] integerValue] : 0;
  
     }
     return self;
@@ -56,6 +59,10 @@
     dictionary[@"password"] = (self.password != nil) ? self.password : [NSNull null];
   
     dictionary[@"method"] = (self.method != nil) ? self.method : [NSNull null];
+
+    dictionary[@"bind_addr"] = (self.bindAddr != nil) ? self.bindAddr : [NSNull null];
+
+    dictionary[@"bind_port"] = @(self.bindPort);
  
     return dictionary;
 }

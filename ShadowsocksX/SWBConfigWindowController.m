@@ -161,6 +161,17 @@
             } else {
                 [_remarksField setStringValue:@""];
             }
+            if (profile.bindAddr) {
+                [_bindAddrField setStringValue:profile.bindAddr];
+            } else {
+                [_bindAddrField setStringValue:@"127.0.0.1"];
+            }
+
+            if (profile.bindPort) {
+                [_bindPortField setStringValue:[NSString stringWithFormat:@"%ld", (long) profile.bindPort]];
+            } else {
+                [_bindPortField setStringValue:@"1080"];
+            }
         }
     }
 }
@@ -176,6 +187,8 @@
         profile.method = [_methodBox stringValue];
         profile.password = [_passwordField stringValue];
         profile.remarks = [_remarksField stringValue];
+        profile.bindAddr = [_bindAddrField stringValue];
+        profile.bindPort = [_bindPortField integerValue];
     }
 
     return YES;

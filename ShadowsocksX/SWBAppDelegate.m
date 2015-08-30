@@ -326,7 +326,7 @@ void onPACChange(
 }
 
 - (void)runProxy {
-    [ShadowsocksRunner reloadConfig];
+    [ProfileManager reloadShadowsocksRunner];
     for (; ;) {
         if ([ShadowsocksRunner runProxy]) {
             sleep(1);
